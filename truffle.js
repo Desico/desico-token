@@ -8,13 +8,15 @@ const providerWithMnemonic = (mnemonic, rpcEndpoint) =>
   new HDWalletProvider(mnemonic, rpcEndpoint);
 
 const infuraProvider = network => providerWithMnemonic(
-  process.env.MNEMONIC || '',
+  // default mnemonic: https://iancoleman.io/bip39/#english
+  process.env.MNEMONIC || 'alcohol tent virus since trouble answer unusual black lumber august afraid pole bar solid left',
   `https://${network}.infura.io/${process.env.INFURA_API_KEY}`
 );
 
 module.exports = {
   solc: {
     optimizer: {
+      version: "^0.5.0",
       enabled: true,
       runs: 200,
     },

@@ -1,22 +1,13 @@
-import { advanceBlock } from './helpers/advanceToBlock';
-import { increaseTimeTo, duration } from './helpers/increaseTime';
-import latestTime from './helpers/latestTime';
-import EVMRevert from './helpers/EVMRevert';
-
-var BigNumber = web3.BigNumber;
-
-require('chai')
-  .use(require('chai-as-promised'))
-  .use(require('chai-bignumber')(BigNumber))
-  .should();
+var chai = require('chai');
+chai.should();
 
 const DesicoToken = artifacts.require('./DesicoToken.sol');
 
 contract('DesicoToken', function (accounts) {
-  const cap = new BigNumber(1023018);
   const name = 'Desico';
   const symbol = 'DESI';
   const decimals = 0;
+  const cap = 1023018;
 
   var token;
 
@@ -33,12 +24,12 @@ contract('DesicoToken', function (accounts) {
       (await token.symbol()).should.be.equal(symbol);
     });
 
-    it('should have 18 decimals', async function () {
-      (await token.decimals()).should.be.bignumber.equal(decimals);
+    it('should have ' + decimals + ' decimals', async function () {
+      (await token.decimals()).toNumber().should.be.equal(decimals);
     });
 
     it('should have correct cap', async function () {
-      (await token.cap()).should.be.bignumber.equal(cap);
+      (await token.cap()).toNumber().should.be.equal(cap);
     });
   });
 });
