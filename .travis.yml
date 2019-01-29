@@ -1,0 +1,19 @@
+dist: trusty
+language: node_js
+node_js:
+- 9.11.1
+before_install:
+- npm install -g truffle codecov
+install:
+- npm install
+cache:
+  directories:
+  - node_modules
+script:
+- npm run lint
+- npm test
+after_script:
+- npm run coverage
+env:
+  global:
+    secure: R/XSlPUy6kBOk2NqezkU8WlFEcQgtuhBJDaI9zrJONe6Zd2oWGYrXLAGJ6YQ9MWxjaNSwble+euglqKD6Cs5ATmvdL7h551mleh2lGH4zhGdN7vbBRdXiv7lYxD9iL1FZSteojyJRGnnMbt+v6arMDqJO7AQEunpDDWJvA0N5FNr4HNm48kiL9WLBw+hOvqwH3cACQtjl+R8xWGd3rUk6DAjSwM1Lwy9XWTt+d2V+5ZR9GKkRDsIEjNyNYd5wu9iML8cZg1HQ5zVRD+dVdXLouFYYuwShXZvCc8gdC3NFLEYpnRFtGVIfHRykPdnHFCUzYOF80STKVsutQRN60KXnJRXY+LBn/kzVnhdw3qvew75LhJKUkHsQhbFI7JRF7NoWG+hk/+Enh1b6/64Nex5fdlzAzFIc2v2+9o7MrxG8Vzr5v+MkMPmtmx+6048K2tv++c5WjWxoh7XFoO8pnUl0s2G8R8ZFAawTmlVe6KPiGhVa3qgAgXG7+owSD3BqECERmfbHdVgecVWRru78dUqxuG6zrvAYu75Ie4ViA556N2YkButnBtxWcc3eQ2e7deV7a7TVnJGErLFUNMHM3tV9aSQXI88SoFa139Tb0IEXWPropu0Nwq6oUYMJUdina/FNqWdLycpRNQ0eZhTm/Ik2blQQPiKFWUMAyD3GQHoBSM=

@@ -1,0 +1,18 @@
+{
+  "package_name": "desico-solidity",
+  "version": "1.0.0",
+  "description": "Desico Smart Contract",
+  "authors": [
+    "Arturas Paleicikas <paleicikas@gmail.com>"
+  ],
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "smart",
+    "contracts",
+    "security",
+    "desico",
+    "ico"
+  ],
+  "license": "ISC"
+}
