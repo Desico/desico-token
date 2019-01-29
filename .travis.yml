@@ -4,6 +4,7 @@ node_js:
 - 9.11.1
 before_install:
 - npm install -g truffle codecov
+- chmod +x scripts/*.sh
 install:
 - npm install
 cache:
