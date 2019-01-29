@@ -8,39 +8,6 @@ module.exports = function (deployer, network, accounts) {
     return;
   }
 
-  const ownerWallet = accounts[0] || process.env.ADDRESS_OWNER;
-  if (!ownerWallet) throw new Error('Owner wallet not set.');
-    
-  const crowdsaleWallet = accounts[1] || process.env.ADDRESS_CROWDSALE;
-  if (!crowdsaleWallet) throw new Error('Crowdsale wallet not set.');
-
-  const teamWallet = accounts[2] || process.env.ADDRESS_TEAM;
-  if (!teamWallet) throw new Error('Team wallet not set.');
-
-  const reserveWallet = accounts[3] || process.env.ADDRESS_RESERVE;
-  if (!reserveWallet) throw new Error('Reserve wallet not set.');
-
-  const foundationWallet = accounts[4] || process.env.ADDRESS_FOUNDATION;
-  if (!foundationWallet) throw new Error('Foundation wallet not set.');
-
-  const advisorsWallet = accounts[5] || process.env.ADDRESS_ADVISORS;
-  if (!advisorsWallet) throw new Error('Advisors wallet not set.');
-
-  const bountiesWallet = accounts[6] || process.env.ADDRESS_BOUNTIES;
-  if (!bountiesWallet) throw new Error('Bounties wallet not set.');
-
-  const financialSupportersWallet = accounts[7] || process.env.ADDRESS_FINANCIAL_SUPPORTERS;
-  if (!financialSupportersWallet) throw new Error('Financial supporters wallet not set.');
-
-  console.log('Owner wallet address: ' + ownerWallet);
-  console.log('Crodsale wallet address: ' + crowdsaleWallet);
-  console.log('Team wallet address: ' + teamWallet);
-  console.log('Reserve wallet address: ' + reserveWallet);
-  console.log('Foundation wallet address: ' + foundationWallet);
-  console.log('Advisors wallet address: ' + advisorsWallet);
-  console.log('Bounties wallet address: ' + bountiesWallet);
-  console.log('Financial supporters wallet address: ' + financialSupportersWallet);
-
   var ico;
   var token;
   var tokenOwner;
@@ -50,18 +17,8 @@ module.exports = function (deployer, network, accounts) {
       if (!e) {
         const startTime = block.timestamp + 60;
         const endTime = startTime + 86400 * 30;
-        const releaseTime = startTime + 86400 * 30;
 
-        return deployer.deploy(
-          DesicoToken,
-          releaseTime,
-          teamWallet,
-          reserveWallet,
-          foundationWallet,
-          advisorsWallet,
-          bountiesWallet,
-          financialSupportersWallet
-        )
+        return deployer.deploy(DesicoToken)
           .then(function () {
             return DesicoToken.deployed();
           })

@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Desico/desico-token-crowdsale.git"
+    "url": "https://github.com/Desico/desico-token.git"
   },
   "keywords": [
     "solidity",
@@ -33,7 +33,7 @@
   "author": "Arturas Paleicikas <paleicikas@gmail.com>, Marius Lukošiūnas <shumkis@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Desico/desico-token-crowdsale/issues"
+    "url": "https://github.com/Desico/desico-token/issues"
   },
   "homepage": "https://www.desico.io",
   "eslintIgnore": [
@@ -78,6 +78,7 @@
     "csv-parse": "^2.2.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.3",
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "openzeppelin-solidity": "^2.1.2"
   }
 }
