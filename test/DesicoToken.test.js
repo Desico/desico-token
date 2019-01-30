@@ -108,13 +108,23 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       // TODO: ...
     });
 
-    /*
+
     it('should burn when not paused', async function () {
-      (await token.paused()).should.be.equal(false);
-      
+      await _unpauseAsync(token);
+      await _addWhitelistedAsync(token, recipient, owner);
+      await _addWhitelistedAsync(token, owner, owner);
+
+      await _mintFromZeroAsync(token, recipient, amount, owner);
+      await _mintFromZeroAsync(token, owner, amount, owner);
+
+      await token.approve(recipient, amount, { from: owner });
+      await token.burnFrom(owner, amountToBurn, { from: recipient });
+
+      await token.approve(owner, amount, { from: recipient });
+      await token.burnFrom(recipient, amountToBurn, { from: owner });
+
       // TODO: ...
     });
-    */
   });
 
   describe('whitelisted', function () {
