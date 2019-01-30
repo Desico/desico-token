@@ -19,25 +19,25 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     token = await DesicoToken.new();
   });
 
-  var _pauseAsync = async function() {
+  var _pauseAsync = async function () {
     (await token.paused()).should.be.equal(false);
     await token.pause().should.be.fulfilled;
     (await token.paused()).should.be.equal(true);
   };
 
-  var _unpauseAsync = async function(token) {
+  var _unpauseAsync = async function (token) {
     (await token.paused()).should.be.equal(true);
     await token.unpause().should.be.fulfilled;
     (await token.paused()).should.be.equal(false);
   };
 
-  var _addWhitelistedAsync = async function(token, address, owner) {
+  var _addWhitelistedAsync = async function (token, address, owner) {
     (await token.isWhitelisted(address)).should.be.equal(false);
     await token.addWhitelisted(address, { from: owner }).should.be.fulfilled;
     (await token.isWhitelisted(address)).should.be.equal(true);
   };
 
-  var _mintFromZeroAsync = async function(token, address, amount, owner) {
+  var _mintFromZeroAsync = async function (token, address, amount, owner) {
     (await token.balanceOf(address)).toNumber().should.be.equal(0);
     await token.mint(address, amount, { from: owner }).should.be.fulfilled;
     (await token.balanceOf(address)).toNumber().should.be.equal(amount);
