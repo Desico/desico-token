@@ -3,13 +3,14 @@ require('babel-register');
 require('babel-polyfill');
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
+const mnemonic = 'alcohol tent virus since trouble answer unusual black lumber august afraid pole bar solid left';
 
 const providerWithMnemonic = (mnemonic, rpcEndpoint) =>
   new HDWalletProvider(mnemonic, rpcEndpoint);
 
 const infuraProvider = network => providerWithMnemonic(
   // default mnemonic: https://iancoleman.io/bip39/#english
-  process.env.MNEMONIC || 'alcohol tent virus since trouble answer unusual black lumber august afraid pole bar solid left',
+  process.env.MNEMONIC || mnemonic,
   `https://${network}.infura.io/${process.env.INFURA_API_KEY}`
 );
 
