@@ -5,8 +5,6 @@ module.exports = function (deployer, network, accounts) {
     return;
   }
 
-  var token;
-
   web3.eth.getBlockNumber((e, blocknr) => {
     web3.eth.getBlock(blocknr, (e, block) => {
       if (!e) {
@@ -16,8 +14,6 @@ module.exports = function (deployer, network, accounts) {
           })
           .then(function (_token) {
             console.log('Token address: ' + DesicoToken.address);
-
-            token = _token;
           });
       }
     });

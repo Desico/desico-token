@@ -17,7 +17,7 @@ const infuraProvider = network => providerWithMnemonic(
 module.exports = {
   solc: {
     optimizer: {
-      version: "^0.5.0",
+      version: '^0.5.0',
       enabled: true,
       runs: 200,
     },
