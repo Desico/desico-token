@@ -32,4 +32,19 @@ contract('DesicoToken', function (accounts) {
       (await token.cap()).toNumber().should.be.equal(cap);
     });
   });
+  describe('pause', function () {
+    it('default should be paused', async function () {
+      (await token.paused()).should.be.equal(true);
+    });
+
+    it('should be able to pause/unpause', async function () {
+      (await token.paused()).should.be.equal(true);
+
+      await token.unpause();
+      (await token.paused()).should.be.equal(false);
+
+      await token.pause();
+      (await token.paused()).should.be.equal(true);
+    });
+  });
 });

@@ -18,5 +18,7 @@ contract DesicoToken is ERC20, ERC20Detailed, ERC20Capped, ERC20Pausable, ERC20B
     ERC20Burnable()
     ERC20Whitelisted()
     ERC20()
-  {}
+  {
+    pause();
+  }
 }
