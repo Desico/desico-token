@@ -43,6 +43,12 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     (await token.balanceOf(address)).toNumber().should.be.equal(amount);
   };
 
+  var _redeemAsync = async function (amount, owner, recipient, anotherAccount) {
+    await token.redeem(recipient, amount, { from: anotherAccount }).should.be.rejectedWith(EVMRevert);
+    await token.redeem(recipient, amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
+    await token.redeem(recipient, amount, { from: owner }).should.be.fulfilled;
+  };
+
   describe('detailed', function () {
     it('should have a name', async function () {
       (await token.name()).should.be.equal(name);
@@ -54,6 +60,10 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
 
     it('should have ' + decimals + ' decimals', async function () {
       (await token.decimals()).toNumber().should.be.equal(decimals);
+    });
+
+    it('should contain correct owner', async function () {
+      (await token.owner()).should.be.equal(owner);
     });
   });
 
@@ -101,29 +111,20 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       (await token.paused()).should.be.equal(true);
 
       await _mintFromZeroAsync(token, recipient, amount, owner);
+      (await token.balanceOf(recipient)).toNumber().should.be.equal(amount);
 
-      await token.burn(amountToBurn, { from: recipient });
+      await _redeemAsync(amountToBurn, owner, recipient, anotherAccount);
       (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToBurn);
-
-      // TODO: ...
     });
-
 
     it('should burn when not paused', async function () {
       await _unpauseAsync(token);
-      await _addWhitelistedAsync(token, recipient, owner);
-      await _addWhitelistedAsync(token, owner, owner);
 
       await _mintFromZeroAsync(token, recipient, amount, owner);
-      await _mintFromZeroAsync(token, owner, amount, owner);
-
-      await token.approve(recipient, amount, { from: owner });
-      await token.burnFrom(owner, amountToBurn, { from: recipient });
-
-      await token.approve(owner, amount, { from: recipient });
-      await token.burnFrom(recipient, amountToBurn, { from: owner });
-
-      // TODO: ...
+      (await token.balanceOf(recipient)).toNumber().should.be.equal(amount);
+      
+      await _redeemAsync(amountToBurn, owner, recipient, anotherAccount);
+      (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToBurn);
     });
   });
 

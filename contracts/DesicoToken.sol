@@ -5,10 +5,11 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Pausable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Burnable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20Capped.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./ERC20Whitelisted.sol";
 
 
-contract DesicoToken is ERC20, ERC20Detailed, ERC20Capped, ERC20Pausable, ERC20Burnable, ERC20Whitelisted {
+contract DesicoToken is ERC20, ERC20Detailed, ERC20Capped, ERC20Pausable, ERC20Burnable, ERC20Whitelisted, Ownable {
   uint private constant INITIAL_SUPPLY = 1023018;
 
   constructor() public
@@ -20,5 +21,11 @@ contract DesicoToken is ERC20, ERC20Detailed, ERC20Capped, ERC20Pausable, ERC20B
     ERC20()
   {
     pause();
+  }
+
+  function redeem(address account, uint256 value) public onlyOwner {
+    require(account != address(0), "invalid address");
+
+    _burn(account, value);
   }
 }
