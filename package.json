@@ -1,7 +1,7 @@
 {
-  "name": "desico-solidity",
+  "name": "desico-token",
   "version": "1.0.0",
-  "description": "Desico Smart Contract",
+  "description": "Desico token",
   "scripts": {
     "test": "scripts/test.sh",
     "coverage": "scripts/coverage.sh",
@@ -28,6 +28,7 @@
     "security",
     "desico",
     "desico.io",
+    "desico ico",
     "desico sto"
   ],
   "author": "Arturas Paleicikas <paleicikas@gmail.com>, Marius Lukošiūnas <shumkis@gmail.com>",

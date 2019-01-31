@@ -1,7 +1,7 @@
 {
-  "package_name": "desico-solidity",
+  "package_name": "desico-token",
   "version": "1.0.0",
-  "description": "Desico Smart Contract",
+  "description": "Desico token",
   "authors": [
     "Arturas Paleicikas <paleicikas@gmail.com>"
   ],
