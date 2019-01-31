@@ -20,15 +20,21 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     token = await DesicoToken.new();
   });
 
-  var _pauseAsync = async function () {
+  var _pauseAsync = async function (token, address, owner) {
     (await token.paused()).should.be.equal(false);
-    await token.pause().should.be.fulfilled;
+
+    await token.pause({ from: address }).should.be.rejectedWith(EVMRevert);
+
+    await token.pause({ from: owner }).should.be.fulfilled;
     (await token.paused()).should.be.equal(true);
   };
 
-  var _unpauseAsync = async function (token) {
+  var _unpauseAsync = async function (token, address, owner) {
     (await token.paused()).should.be.equal(true);
-    await token.unpause().should.be.fulfilled;
+
+    await token.unpause({ from: address }).should.be.rejectedWith(EVMRevert);
+
+    await token.unpause({ from: owner }).should.be.fulfilled;
     (await token.paused()).should.be.equal(false);
   };
 
@@ -107,7 +113,7 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     });
 
     it('should mint when not paused', async function () {
-      await _unpauseAsync(token);
+      await _unpauseAsync(token, recipient, owner);
       await _mintFromZeroAsync(token, recipient, amount, owner);
     });
   });
@@ -132,7 +138,7 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     });
 
     it('should burn when not paused', async function () {
-      await _unpauseAsync(token);
+      await _unpauseAsync(token, recipient, owner);
 
       (await token.totalSupply()).toNumber().should.be.equal(0);
 
@@ -168,7 +174,7 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     });
 
     it('should be able to transfer (whitelisted)', async function () {
-      await _unpauseAsync(token);
+      await _unpauseAsync(token, recipient, owner);
       await _addWhitelistedAsync(token, recipient, owner);
       await _mintFromZeroAsync(token, recipient, amount, owner);
 
@@ -189,8 +195,8 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     });
 
     it('should be able to pause/unpause', async function () {
-      await _unpauseAsync(token);
-      await _pauseAsync(token);
+      await _unpauseAsync(token, recipient, owner);
+      await _pauseAsync(token, recipient, owner);
     });
   });
 });
