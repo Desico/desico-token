@@ -5,6 +5,7 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 chai.should();
 
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const DesicoToken = artifacts.require('./DesicoToken.sol');
 
 contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAccounts]) {
@@ -32,20 +33,28 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
   };
 
   var _addWhitelistedAsync = async function (token, address, owner) {
+    await token.addWhitelisted(ZERO_ADDRESS, { from: owner }).should.be.rejectedWith(EVMRevert);
+    await token.addWhitelisted(address, { from: address }).should.be.rejectedWith(EVMRevert);
+
     (await token.isWhitelisted(address)).should.be.equal(false);
     await token.addWhitelisted(address, { from: owner }).should.be.fulfilled;
     (await token.isWhitelisted(address)).should.be.equal(true);
   };
 
   var _mintFromZeroAsync = async function (token, address, amount, owner) {
+    await token.mint(ZERO_ADDRESS, amount, { from: owner }).should.be.rejectedWith(EVMRevert);
+    await token.mint(address, amount, { from: address }).should.be.rejectedWith(EVMRevert);
+    
     (await token.balanceOf(address)).toNumber().should.be.equal(0);
     await token.mint(address, amount, { from: owner }).should.be.fulfilled;
     (await token.balanceOf(address)).toNumber().should.be.equal(amount);
   };
 
   var _redeemAsync = async function (amount, owner, recipient, anotherAccount) {
+    await token.redeem(ZERO_ADDRESS, amount, { from: anotherAccount }).should.be.rejectedWith(EVMRevert);
     await token.redeem(recipient, amount, { from: anotherAccount }).should.be.rejectedWith(EVMRevert);
     await token.redeem(recipient, amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
+
     await token.redeem(recipient, amount, { from: owner }).should.be.fulfilled;
   };
 
@@ -106,25 +115,34 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
   describe('burnable', function () {
     const amount = 100;
     const amountToBurn = 25;
+    const amountAfterBurn = amount - amountToBurn;
 
     it('should burn when paused', async function () {
       (await token.paused()).should.be.equal(true);
 
+      (await token.totalSupply()).toNumber().should.be.equal(0);
+
       await _mintFromZeroAsync(token, recipient, amount, owner);
       (await token.balanceOf(recipient)).toNumber().should.be.equal(amount);
+      (await token.totalSupply()).toNumber().should.be.equal(amount);
 
       await _redeemAsync(amountToBurn, owner, recipient, anotherAccount);
-      (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToBurn);
+      (await token.balanceOf(recipient)).toNumber().should.be.equal(amountAfterBurn);
+      (await token.totalSupply()).toNumber().should.be.equal(amountAfterBurn);
     });
 
     it('should burn when not paused', async function () {
       await _unpauseAsync(token);
 
+      (await token.totalSupply()).toNumber().should.be.equal(0);
+
       await _mintFromZeroAsync(token, recipient, amount, owner);
       (await token.balanceOf(recipient)).toNumber().should.be.equal(amount);
+      (await token.totalSupply()).toNumber().should.be.equal(amount);
       
       await _redeemAsync(amountToBurn, owner, recipient, anotherAccount);
-      (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToBurn);
+      (await token.balanceOf(recipient)).toNumber().should.be.equal(amountAfterBurn);
+      (await token.totalSupply()).toNumber().should.be.equal(amountAfterBurn);
     });
   });
 
