@@ -228,7 +228,6 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       await token.transfer(anotherAccount, amount + amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
       await token.transfer(anotherAccount, amount, { from: recipient }).should.be.fulfilled;
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(amount);
-      
     });
   });
 });
