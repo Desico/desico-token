@@ -80,6 +80,16 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     it('should contain correct owner', async function () {
       (await token.owner()).should.be.equal(owner);
     });
+
+    it('should be able to transfer ownership', async function () {
+      await token.transferOwnership(recipient, { from: anotherAccount }).should.be.rejectedWith(EVMRevert);
+
+      await token.transferOwnership(recipient, { from: owner }).should.be.fulfilled;
+      (await token.owner()).should.be.equal(recipient);
+
+      await token.transferOwnership(owner, { from: recipient }).should.be.fulfilled;
+      (await token.owner()).should.be.equal(owner);
+    });
   });
 
   describe('capped', function () {
@@ -197,6 +207,28 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
     it('should be able to pause/unpause', async function () {
       await _unpauseAsync(token, recipient, owner);
       await _pauseAsync(token, recipient, owner);
+    });
+
+    it('should be able to transfer when unpaused', async function () {
+      const amount = 100;
+      const amountWhenSmall = 0.5;
+
+      (await token.paused()).should.be.equal(true);
+
+      await _mintFromZeroAsync(token, recipient, amount, owner);
+
+      await _addWhitelistedAsync(token, recipient, owner);
+      await _addWhitelistedAsync(token, anotherAccount, owner);
+
+      await token.transfer(anotherAccount, amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
+
+      await _unpauseAsync(token, recipient, owner);
+      
+      await token.transfer(anotherAccount, amountWhenSmall, { from: recipient }).should.not.be.fulfilled;
+      await token.transfer(anotherAccount, amount + amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
+      await token.transfer(anotherAccount, amount, { from: recipient }).should.be.fulfilled;
+      (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(amount);
+      
     });
   });
 });
