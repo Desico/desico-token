@@ -148,10 +148,14 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       await mintFromZeroAsync(token, recipient, amount, owner);
 
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(0);
-      await token.transfer(anotherAccount, amountToSend, { from: recipient }).should.be.rejectedWith(EVMRevert);
+      await token.transfer(anotherAccount, amountToSend, { from: recipient })
+              .should.be.rejectedWith(EVMRevert);
       
-      await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient }).should.be.rejectedWith(EVMRevert);
-      await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient }).should.be.rejectedWith(EVMRevert);
+      await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient })
+              .should.be.rejectedWith(EVMRevert);
+
+      await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient })
+              .should.be.rejectedWith(EVMRevert);
       
       await addWhitelistedAsync(token, recipient, owner);
       await addWhitelistedAsync(token, anotherAccount, owner);
@@ -160,8 +164,11 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(amountToSend);
       (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToSend);
 
-      await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient }).should.be.fulfilled;
-      await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient }).should.be.fulfilled;
+      await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient })
+              .should.be.fulfilled;
+
+      await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient })
+              .should.be.fulfilled;
     });
   });
 
@@ -186,7 +193,8 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       await addWhitelistedAsync(token, recipient, owner);
       await addWhitelistedAsync(token, anotherAccount, owner);
 
-      await token.transfer(anotherAccount, amount, { from: recipient }).should.be.rejectedWith(EVMRevert);
+      await token.transfer(anotherAccount, amount, { from: recipient })
+              .should.be.rejectedWith(EVMRevert);
 
       await unpauseAsync(token, recipient, owner);
       
