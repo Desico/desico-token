@@ -12,7 +12,7 @@ const { pauseAsync,
   redeemAsync } = require('./helpers/functions');
 const DesicoToken = artifacts.require('./DesicoToken.sol');
 
-contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAccounts]) {
+contract('DesicoToken', function ([owner, recipient, anotherAccount, anotherAccount2, ...otherAccounts]) {
   const name = 'Desico';
   const symbol = 'DESI';
   const decimals = 0;
@@ -150,7 +150,7 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(0);
       await token.transfer(anotherAccount, amountToSend, { from: recipient })
         .should.be.rejectedWith(EVMRevert);
-      
+
       await token.approve(anotherAccount, amountToSend, { from: recipient })
         .should.be.rejectedWith(EVMRevert);
 
@@ -159,9 +159,17 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
 
       await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient })
         .should.be.rejectedWith(EVMRevert);
-      
+
       await addWhitelistedAsync(token, recipient, owner);
       await addWhitelistedAsync(token, anotherAccount, owner);
+
+      await token.approve(anotherAccount, amountToSend, { from: recipient })
+        .should.be.fulfilled;
+
+      await token.transferFrom(recipient, anotherAccount2, amountToSend, { from: anotherAccount })
+        .should.be.rejectedWith(EVMRevert);
+        
+      await addWhitelistedAsync(token, anotherAccount2, owner);
 
       await token.transfer(anotherAccount, amountToSend, { from: recipient }).should.be.fulfilled;
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(amountToSend);
@@ -174,6 +182,9 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
         .should.be.fulfilled;
 
       await token.decreaseAllowance(anotherAccount, amountToSend, { from: recipient })
+        .should.be.fulfilled;
+
+      await token.transferFrom(recipient, anotherAccount2, amountToSend, { from: anotherAccount })
         .should.be.fulfilled;
     });
   });
