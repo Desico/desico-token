@@ -52,5 +52,5 @@ module.exports = {
   unpauseAsync,
   addWhitelistedAsync,
   mintFromZeroAsync,
-  redeemAsync
+  redeemAsync,
 };
