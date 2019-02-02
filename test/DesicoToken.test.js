@@ -151,6 +151,9 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       await token.transfer(anotherAccount, amountToSend, { from: recipient })
               .should.be.rejectedWith(EVMRevert);
       
+      await token.approve(anotherAccount, amountToSend, { from: recipient })
+              .should.be.rejectedWith(EVMRevert);
+
       await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient })
               .should.be.rejectedWith(EVMRevert);
 
@@ -163,6 +166,9 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, ...otherAcc
       await token.transfer(anotherAccount, amountToSend, { from: recipient }).should.be.fulfilled;
       (await token.balanceOf(anotherAccount)).toNumber().should.be.equal(amountToSend);
       (await token.balanceOf(recipient)).toNumber().should.be.equal(amount - amountToSend);
+
+      await token.approve(anotherAccount, amountToSend, { from: recipient })
+              .should.be.fulfilled;
 
       await token.increaseAllowance(anotherAccount, amountToSend, { from: recipient })
               .should.be.fulfilled;
