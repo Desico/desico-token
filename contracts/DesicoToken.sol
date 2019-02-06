@@ -10,7 +10,7 @@ import "openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol";
 
 
 contract DesicoToken is ERC20, ERC20Detailed, ERC20Capped, ERC20Pausable, ERC20Burnable, WhitelistedRole, Ownable {
-  uint private constant INITIAL_SUPPLY = 1023018;
+  uint private constant INITIAL_SUPPLY = 38575472;
 
   constructor() public
     ERC20Detailed("Desico", "DESI", 0)

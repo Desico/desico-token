@@ -16,7 +16,7 @@ contract('DesicoToken', function ([owner, recipient, anotherAccount, anotherAcco
   const name = 'Desico';
   const symbol = 'DESI';
   const decimals = 0;
-  const cap = 1023018;
+  const cap = 38575472;
 
   var token;
 
