@@ -10,4 +10,4 @@
   <img src="https://www.desico.io/images/logo.png">
 </p>
 
-DESICO is the world’s first platform to issue, buy, and sell security tokens in full compliance with the law. See [desico.io](https://www.desico.io) for more details.
+EU compliant STO platform. See [desico.io](https://www.desico.io) for more details.
