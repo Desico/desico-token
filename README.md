@@ -10,5 +10,5 @@
   <img src="https://www.desico.io/images/logo.png">
 </p>
 <p align="center">
-  EU compliant STO platform. See [desico.io](https://www.desico.io) for more details.
+  EU compliant STO platform. See https://www.desico.io for more details.
 </p>
